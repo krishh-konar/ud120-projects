@@ -15,6 +15,38 @@ bumpy_fast = [features_train[ii][1] for ii in range(0, len(features_train)) if l
 grade_slow = [features_train[ii][0] for ii in range(0, len(features_train)) if labels_train[ii]==1]
 bumpy_slow = [features_train[ii][1] for ii in range(0, len(features_train)) if labels_train[ii]==1]
 
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.metrics import accuracy_score
+
+
+# AdaBoost Classifier
+'''
+clf = AdaBoostClassifier(n_estimators=100)
+
+clf.fit(features_train,labels_train)
+pred = clf.predict(features_test)
+
+print accuracy_score(labels_test,pred)
+'''
+
+#Random Forest Classifier
+from sklearn.ensemble import RandomForestClassifier
+'''
+clf = RandomForestClassifier(n_estimators = 12)
+clf.fit(features_train,labels_train)
+pred = clf.predict(features_test)
+
+print accuracy_score(labels_test,pred)
+'''
+
+#K-Nearest Neighbours Classifier
+from sklearn.neighbors import KNeighborsClassifier
+
+clf = KNeighborsClassifier(n_neighbors=4)
+clf.fit(features_train,labels_train)
+pred = clf.predict(features_test)
+
+print accuracy_score(labels_test,pred)
 
 #### initial visualization
 plt.xlim(0.0, 1.0)
@@ -30,13 +62,6 @@ plt.show()
 
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
-
-
-
-
-
-
-
 
 try:
     prettyPicture(clf, features_test, labels_test)

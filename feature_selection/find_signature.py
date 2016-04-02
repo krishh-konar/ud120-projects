@@ -38,6 +38,52 @@ labels_train   = labels_train[:150]
 
 
 ### your code goes here
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+clf = DecisionTreeClassifier()
+clf.fit(features_train,labels_train)
+pred = clf.predict(features_test) 
+
+# print 'num training pts: ' + str(len(labels_train)) +' :; ' + str(len(features_train[0])) + ' :; ' + str(len(pred))
+# print accuracy_score(labels_test,pred)
+# print len(clf.feature_importances_)
+features = clf.feature_importances_
 
 
+# What's the importance of the most important feature? What is the number of this feature? 
+# loop_index, count,most_imp,index = 0,0,0,0
+# for f in features:
+# 	if f>0.2:
+# 		count+=1
+# 		if f>most_imp:
+# 			most_imp=f
+# 			index=loop_index
+# 	loop_index+=1
 
+# print most_imp,index
+
+# What is it? Does it make sense as a word that's uniquely tied to either Chris Germany or Sara Shackleton, a signature of sorts?
+tfidf_list = vectorizer.get_feature_names()
+# print tfidf_list[33614]
+
+
+#Any other outliers pop up? What word is it? Seem like a signature-type word? 
+loop_index, count,most_imp,index = 0,0,0,[]
+for f in features:
+	if f>0.2:
+		print f
+		index.append(loop_index)
+	loop_index+=1
+
+print index
+
+outliers = []
+
+for i in index:
+	outliers.append(tfidf_list[i])
+
+print outliers
+
+#final accuracy score
+print accuracy_score(labels_test,pred)

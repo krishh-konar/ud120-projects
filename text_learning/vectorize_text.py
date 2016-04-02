@@ -4,6 +4,10 @@ import os
 import pickle
 import re
 import sys
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
 
 sys.path.append( "../tools/" )
 from parse_out_email_text import parseOutText
@@ -41,24 +45,29 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
     for path in from_person:
         ### only look at first 200 emails when developing
         ### once everything is working, remove this line to run over full dataset
-        temp_counter += 1
+        #emp_counter += 1
         if temp_counter < 200:
             path = os.path.join('..', path[:-1])
             print path
             email = open(path, "r")
 
             ### use parseOutText to extract the text from the opened email
-
+            string = parseOutText(email)
             ### use str.replace() to remove any instances of the words
             ### ["sara", "shackleton", "chris", "germani"]
-
+            for word in ["sara", "shackleton", "chris", "germani","sshacklensf","cgermannsf"]:
+                string = string.replace(word,"")
             ### append the text to word_data
-
+            word_data.append(string)
             ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
-
+            if name == "sara":
+                from_data.append(0)
+            else:
+                from_data.append(1)
 
             email.close()
 
+print len(word_data[152])
 print "emails processed"
 from_sara.close()
 from_chris.close()
@@ -68,8 +77,19 @@ pickle.dump( from_data, open("your_email_authors.pkl", "w") )
 
 
 
-
-
 ### in Part 4, do TfIdf vectorization here
+#print word_data
+sw = stopwords.words("english")
 
+#stop_words = sw doesn't work!
+tf = TfidfVectorizer(stop_words="english")
+cv = CountVectorizer(stop_words="english")
 
+count_matrix_cv = cv.fit_transform(word_data)
+count_matrix_tf = tf.fit_transform(word_data)
+
+tfidf = TfidfTransformer()
+
+#feature_vector = tfidf.fit_transform(count_matrix)
+print 'tf idf: ' + str(len(tf.get_feature_names()))
+print tf.get_feature_names()[34597]
