@@ -12,6 +12,8 @@ from outlier_cleaner import outlierCleaner
 ages = pickle.load( open("practice_outliers_ages.pkl", "r") )
 net_worths = pickle.load( open("practice_outliers_net_worths.pkl", "r") )
 
+
+
 ### ages and net_worths need to be reshaped into 2D numpy arrays
 ### second argument of reshape command is a tuple of integers: (n_rows, n_columns)
 ### by convention, n_rows is the number of data points
@@ -35,6 +37,7 @@ pred = reg.predict(ages_test)
 print reg.score(ages_test,net_worths_test)
 
 
+
 try:
     plt.plot(ages, reg.predict(ages), color="blue")
 except NameError:
@@ -48,8 +51,7 @@ cleaned_data = []
 try:
     predictions = reg.predict(ages_train)
     cleaned_data = outlierCleaner( predictions, ages_train, net_worths_train )
-
-    
+    print cleaned_data
 except NameError:
     print "your regression object doesn't exist, or isn't name reg"
     print "can't make predictions to use in identifying outliers"
@@ -70,9 +72,6 @@ if len(cleaned_data) > 0:
     try:
         reg.fit(ages, net_worths)
         plt.plot(ages, reg.predict(ages), color="blue")
-
-        print reg.coef_
-        print reg.score(ages_test,net_worths_test)
     except NameError:
         print "you don't seem to have regression imported/created,"
         print "   or else your regression object isn't named reg"

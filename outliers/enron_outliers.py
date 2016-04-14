@@ -18,8 +18,6 @@ print type(data_dict), type(data)
 reg = LinearRegression()
 
 
-
-
 #reg.fit(data_dict["salary"],data_dict["bonus"])
 cnt=0
 for i in data_dict:
